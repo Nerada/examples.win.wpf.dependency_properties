@@ -47,6 +47,7 @@
                         </Trigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
+                                <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                                 <Condition Binding="{Binding IsEnabled, RelativeSource={RelativeSource Self}}"
                                            Value="false" />
                             </MultiDataTrigger.Conditions>
@@ -54,7 +55,7 @@
                                     Value="{StaticResource ComboBox.Disabled.Background}" />
                             <Setter Property="BorderBrush" TargetName="templateRoot"
                                     Value="{StaticResource ComboBox.Disabled.Border}" />
-                            <Setter Property="Cursor" Value="Arrow"/>
+                            <Setter Property="Cursor" Value="Arrow" />
                         </MultiDataTrigger>
 
                     </ControlTemplate.Triggers>
@@ -205,8 +206,9 @@
     </Style>
 
     <Style TargetType="{x:Type ToolTip}">
-        <Setter Property="Margin" Value="5,0,3,0"/>
-        <Setter Property="Visibility" Value="{Binding PlacementTarget, RelativeSource={RelativeSource Self}, Converter={StaticResource TrimmedVisibilityConverter}}" />
+        <Setter Property="Margin" Value="5,0,3,0" />
+        <Setter Property="Visibility"
+                Value="{Binding PlacementTarget, RelativeSource={RelativeSource Self}, Converter={StaticResource TrimmedVisibilityConverter}}" />
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>

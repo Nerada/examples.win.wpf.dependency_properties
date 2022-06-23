@@ -13,13 +13,22 @@ namespace DependencyProperties.Resources.ExtendedControls
     public class ExtendedComboBox : ComboBox
     {
         /// <summary>
-        /// Foreground hover color extension
+        ///     Foreground hover color extension
         /// </summary>
         public static readonly DependencyProperty HasForegroundHoverColorProperty =
             DependencyProperty.Register("HasForegroundHoverColor", typeof(bool), typeof(ExtendedComboBox), new PropertyMetadata(false));
 
         public static readonly DependencyProperty ForegroundHoverColorProperty =
             DependencyProperty.Register("ForegroundHoverColor", typeof(Brush), typeof(ExtendedComboBox), new PropertyMetadata(default(Brush), ForegroundHoverColorChangedCallback));
+
+        /// <summary>
+        ///     Background hover color extension
+        /// </summary>
+        public static readonly DependencyProperty HasBackgroundHoverColorProperty =
+            DependencyProperty.Register("HasBackgroundHoverColor", typeof(bool), typeof(ExtendedComboBox), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty BackgroundHoverColorProperty =
+            DependencyProperty.Register("BackgroundHoverColor", typeof(Brush), typeof(ExtendedComboBox), new PropertyMetadata(default(Brush), BackgroundHoverColorChangedCallback));
 
         public bool HasForegroundHoverColor => (bool)GetValue(HasForegroundHoverColorProperty);
 
@@ -29,20 +38,6 @@ namespace DependencyProperties.Resources.ExtendedControls
             set => SetValue(ForegroundHoverColorProperty, value);
         }
 
-        private static void ForegroundHoverColorChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
-        {
-            (dependencyObject as ExtendedComboBox)?.SetValue(HasForegroundHoverColorProperty, true);
-        }
-
-        /// <summary>
-        /// Background hover color extension
-        /// </summary>
-        public static readonly DependencyProperty HasBackgroundHoverColorProperty =
-            DependencyProperty.Register("HasBackgroundHoverColor", typeof(bool), typeof(ExtendedComboBox), new PropertyMetadata(false));
-
-        public static readonly DependencyProperty BackgroundHoverColorProperty =
-            DependencyProperty.Register("BackgroundHoverColor", typeof(Brush), typeof(ExtendedComboBox), new PropertyMetadata(default(Brush), BackgroundHoverColorChangedCallback));
-
         public bool HasBackgroundHoverColor => (bool)GetValue(HasBackgroundHoverColorProperty);
 
         public Brush BackgroundHoverColor
@@ -51,9 +46,10 @@ namespace DependencyProperties.Resources.ExtendedControls
             set => SetValue(BackgroundHoverColorProperty, value);
         }
 
-        private static void BackgroundHoverColorChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
-        {
+        private static void ForegroundHoverColorChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args) =>
+            (dependencyObject as ExtendedComboBox)?.SetValue(HasForegroundHoverColorProperty, true);
+
+        private static void BackgroundHoverColorChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args) =>
             (dependencyObject as ExtendedComboBox)?.SetValue(HasBackgroundHoverColorProperty, true);
-        }
     }
 }

@@ -7,7 +7,7 @@
 namespace DependencyProperties
 {
     /// <summary>
-    /// Interaction logic for DemoWindowSegmentedScrollBar.xaml
+    ///     Interaction logic for DemoWindowSegmentedScrollBar.xaml
     /// </summary>
     public partial class DemoWindowSegmentedScrollBar
     {
@@ -18,9 +18,6 @@ namespace DependencyProperties
             Loaded += (_, _) => DemoWindowSegmentedScrollBarLoaded();
         }
 
-        private void DemoWindowSegmentedScrollBarLoaded()
-        {
-            DataContext = new DemoWindowSegmentedScrollBarViewModel();
-        }
+        private void DemoWindowSegmentedScrollBarLoaded() => DataContext = new DemoWindowSegmentedScrollBarViewModel();
     }
 }

@@ -15,9 +15,9 @@ namespace DependencyProperties.Resources.ExtendedControls
     {
         private readonly SegmentedScrollBar _scrollBar;
 
-        private bool _thumbDragging;
-
         private bool _thumbBiggerThanSmallestSegment;
+
+        private bool _thumbDragging;
 
         public SegmentedScrollBarBehaviors(SegmentedScrollBar scrollBar)
         {
@@ -85,12 +85,6 @@ namespace DependencyProperties.Resources.ExtendedControls
             _scrollBar.CanExecuteNextCommand     = _scrollBar.IsMouseOver && Math.Abs(_scrollBar.Maximum - _scrollBar.Value)   > double.Epsilon;
         }
 
-        private enum ButtonType
-        {
-            LeftSegmentButton,
-            RightSegmentButton
-        }
-
         private void OnSegmentButtonClick(ButtonType buttonType)
         {
             // check if it comes from the right or left button, depending on that, switch to right or left segment.
@@ -119,13 +113,19 @@ namespace DependencyProperties.Resources.ExtendedControls
         /// </summary>
         private void JumpOffSegmentBoundary()
         {
-            if (_thumbDragging || _thumbBiggerThanSmallestSegment) return;
+            if (_thumbDragging || _thumbBiggerThanSmallestSegment)
+            {
+                return;
+            }
 
             double? boundaryValue = Boundaries.Find(segment => segment > _scrollBar.Value && segment < _scrollBar.Value + _scrollBar.ViewportSize);
 
-            if (!(boundaryValue is { } boundary) || boundary == 0) return;
+            if (!(boundaryValue is { } boundary) || boundary == 0)
+            {
+                return;
+            }
 
-            double halfThumbValue = _scrollBar.Value + (_scrollBar.ViewportSize / 2);
+            double halfThumbValue = _scrollBar.Value + _scrollBar.ViewportSize / 2;
 
             // Jump to the left or right of a segment boundary
             _scrollBar.Value = halfThumbValue < boundary ? boundary - _scrollBar.ViewportSize : boundary;
@@ -133,11 +133,14 @@ namespace DependencyProperties.Resources.ExtendedControls
 
         private void CheckViewPortSize()
         {
-            var checkBoundaries = new List<double>(Boundaries);
+            List<double> checkBoundaries = new(Boundaries);
             checkBoundaries.Insert(0, 0);
             checkBoundaries.Add(_scrollBar.Maximum + _scrollBar.Track.ViewportSize);
 
-            if (_scrollBar.ViewportSize < 1) return;
+            if (_scrollBar.ViewportSize < 1)
+            {
+                return;
+            }
 
             double smallestSegment = SmallestDifference(checkBoundaries);
 
@@ -156,13 +159,19 @@ namespace DependencyProperties.Resources.ExtendedControls
 
         private static double SmallestDifference(List<double> source)
         {
-            var difference = double.MaxValue;
-            for (var i = 1; i < source.Count; i++)
+            double difference = double.MaxValue;
+            for (int i = 1; i < source.Count; i++)
             {
                 difference = Math.Min(difference, source[i] - source[i - 1]);
             }
 
             return difference;
+        }
+
+        private enum ButtonType
+        {
+            LeftSegmentButton,
+            RightSegmentButton
         }
     }
 }

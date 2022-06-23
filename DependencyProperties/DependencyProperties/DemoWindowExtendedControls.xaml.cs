@@ -7,7 +7,7 @@
 namespace DependencyProperties
 {
     /// <summary>
-    /// Interaction logic for DemoWindowExtendedControls.xaml
+    ///     Interaction logic for DemoWindowExtendedControls.xaml
     /// </summary>
     public partial class DemoWindowExtendedControls
     {
@@ -18,9 +18,6 @@ namespace DependencyProperties
             Loaded += (_, _) => DemoWindowExtendedControlsLoaded();
         }
 
-        private void DemoWindowExtendedControlsLoaded()
-        {
-            DataContext = new DemoWindowExtendedControlsViewModel();
-        }
+        private void DemoWindowExtendedControlsLoaded() => DataContext = new DemoWindowExtendedControlsViewModel();
     }
 }

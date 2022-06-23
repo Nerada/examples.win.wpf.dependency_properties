@@ -48,12 +48,15 @@ namespace DependencyProperties.Resources.ExtendedControls
 
         public void DrawSegmentBoundaries()
         {
-            if (TopCanvas == null || BottomCanvas == null) return;
+            if (TopCanvas == null || BottomCanvas == null)
+            {
+                return;
+            }
 
             TopCanvas?.Children.Clear();
             BottomCanvas?.Children.Clear();
 
-            var drawBoundaries = new List<double>(SegmentBoundaries);
+            List<double> drawBoundaries = new(SegmentBoundaries);
 
             if (DrawRegions)
             {
@@ -61,17 +64,23 @@ namespace DependencyProperties.Resources.ExtendedControls
                 drawBoundaries.Add(_scrollBar.Track.Maximum + _scrollBar.Track.ViewportSize);
             }
 
-            for (var index = 0; index < drawBoundaries.Count; index++)
+            for (int index = 0; index < drawBoundaries.Count; index++)
             {
                 double segmentBoundary = drawBoundaries[index];
                 Brush  color           = SegmentColors == null || index > SegmentColors.Count - 1 ? new SolidColorBrush(Colors.OrangeRed) : SegmentColors[index];
 
-                if (DrawRegions && index + 1 > drawBoundaries.Count - 1) return;
+                if (DrawRegions && index + 1 > drawBoundaries.Count - 1)
+                {
+                    return;
+                }
 
                 double size     = DrawRegions ? CalculatePixelBoundaryPosition(drawBoundaries[index + 1]) - CalculatePixelBoundaryPosition(drawBoundaries[index]) : 2;
                 double position = DrawRegions ? CalculatePixelBoundaryPosition(drawBoundaries[index]) : CalculatePixelBoundaryPosition(segmentBoundary);
 
-                if (double.IsInfinity(position)) return;
+                if (double.IsInfinity(position))
+                {
+                    return;
+                }
 
                 DrawBoundary(size, position, color);
             }
@@ -88,7 +97,7 @@ namespace DependencyProperties.Resources.ExtendedControls
 
         private void DrawBoundary(double size, double position, Brush color)
         {
-            var rect = new Rectangle()
+            Rectangle rect = new()
             {
                 Width  = _scrollBar.Orientation == Orientation.Horizontal ? size : _scrollBar.Track.ActualWidth,
                 Height = _scrollBar.Orientation == Orientation.Horizontal ? _scrollBar.Track.ActualHeight : size,
@@ -98,14 +107,22 @@ namespace DependencyProperties.Resources.ExtendedControls
             };
 
             if (DrawRegions)
+            {
                 BottomCanvas?.Children.Add(rect);
+            }
             else
+            {
                 TopCanvas?.Children.Add(rect);
+            }
 
             if (_scrollBar.Orientation == Orientation.Horizontal)
+            {
                 Canvas.SetLeft(rect, position);
+            }
             else
+            {
                 Canvas.SetTop(rect, position);
+            }
         }
     }
 }

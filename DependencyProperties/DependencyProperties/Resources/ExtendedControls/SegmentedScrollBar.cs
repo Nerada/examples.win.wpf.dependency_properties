@@ -110,15 +110,25 @@ namespace DependencyProperties.Resources.ExtendedControls
 
         private static void ScrollViewerChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
         {
-            if (dependencyObject is not SegmentedScrollBar scrollBar || args.NewValue == null) return;
+            if (dependencyObject is not SegmentedScrollBar scrollBar || args.NewValue == null)
+            {
+                return;
+            }
 
             scrollBar.UpdateBindings();
         }
 
         private static void SegmentBoundariesChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
         {
-            if (dependencyObject is not SegmentedScrollBar scrollBar || args.NewValue == null) return;
-            if (!(scrollBar.SegmentBoundaries is { })) return;
+            if (dependencyObject is not SegmentedScrollBar scrollBar || args.NewValue == null)
+            {
+                return;
+            }
+
+            if (!(scrollBar.SegmentBoundaries is { }))
+            {
+                return;
+            }
 
             scrollBar._segmentedScrollBarDrawing.DrawSegmentBoundaries();
             scrollBar._segmentedScrollBarBehaviors.SegmentBoundariesChanged();
@@ -126,8 +136,15 @@ namespace DependencyProperties.Resources.ExtendedControls
 
         private static void SegmentAppearanceChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
         {
-            if (dependencyObject is not SegmentedScrollBar scrollBar || args.NewValue == null) return;
-            if (scrollBar.SegmentBoundaries is not { }) return;
+            if (dependencyObject is not SegmentedScrollBar scrollBar || args.NewValue == null)
+            {
+                return;
+            }
+
+            if (scrollBar.SegmentBoundaries is not { })
+            {
+                return;
+            }
 
             scrollBar._segmentedScrollBarDrawing.DrawSegmentBoundaries();
         }
@@ -161,10 +178,7 @@ namespace DependencyProperties.Resources.ExtendedControls
             SmallChange = 16;
         }
 
-        private void BoundScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            Value = Orientation == Orientation.Horizontal ? e.HorizontalOffset : e.VerticalOffset;
-        }
+        private void BoundScrollChanged(object sender, ScrollChangedEventArgs e) => Value = Orientation == Orientation.Horizontal ? e.HorizontalOffset : e.VerticalOffset;
 
         private void OnScroll(object sender, ScrollEventArgs e)
         {
