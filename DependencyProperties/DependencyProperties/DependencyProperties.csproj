@@ -1,4 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
@@ -7,6 +8,7 @@
     <Company>RamBo</Company>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  
   <ItemGroup>
     <None Remove="Images\1.jpg" />
     <None Remove="Images\2.png" />
@@ -14,20 +16,38 @@
     <None Remove="Images\3.png" />
     <None Remove="Images\4.jpg" />
   </ItemGroup>
+  
   <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
     <PackageReference Include="MathConverter" Version="2.1.0-alpha0001" />
     <PackageReference Include="Prism.Core" Version="8.0.0.1909" />
   </ItemGroup>
+  
   <ItemGroup>
     <Resource Include="Images\1.jpg" />
     <Resource Include="Images\2.png" />
     <Resource Include="Images\3.png" />
     <Resource Include="Images\4.jpg" />
   </ItemGroup>
+  
   <ItemGroup>
     <Page Update="DemoWindowExtendedControls.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  
+  <Target Name="SetSourceRevisionId" BeforeTargets="BeforeResGen" Condition="'$(SourceRevisionId)' == ''"> 
+    <Message Importance="High" Text="Running meta data script" /> 
+    <PropertyGroup>
+      <ScriptLocation>https://raw.githubusercontent.com/Nerada/devops.pipelines/master/build-scripts/buildMetaData.ps1</ScriptLocation>
+    </PropertyGroup>
+
+    <Exec Command="powershell -NonInteractive -ExecutionPolicy Bypass Invoke-Command -ScriptBlock ([Scriptblock]::Create(((Invoke-WebRequest -Uri '$(ScriptLocation)' -UseBasicParsing).Content)))" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="SourceRevisionId" /> 
+    </Exec> 
+
+    <Message Importance="High" Text="SourceRevisionId set from project file to: $(SourceRevisionId)" /> 
+  </Target>
+  
 </Project>
