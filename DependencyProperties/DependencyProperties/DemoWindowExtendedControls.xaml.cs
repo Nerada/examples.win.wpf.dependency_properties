@@ -1,23 +1,22 @@
 ﻿// -----------------------------------------------
 //     Author: Ramon Bollen
 //      File: DependencyProperties.DemoWindowExtendedControls.xaml.cs
-// Created on: 20201209
+// Created on: 20220623
 // -----------------------------------------------
 
-namespace DependencyProperties
+namespace DependencyProperties;
+
+/// <summary>
+///     Interaction logic for DemoWindowExtendedControls.xaml
+/// </summary>
+public partial class DemoWindowExtendedControls
 {
-    /// <summary>
-    ///     Interaction logic for DemoWindowExtendedControls.xaml
-    /// </summary>
-    public partial class DemoWindowExtendedControls
+    public DemoWindowExtendedControls()
     {
-        public DemoWindowExtendedControls()
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            Loaded += (_, _) => DemoWindowExtendedControlsLoaded();
-        }
-
-        private void DemoWindowExtendedControlsLoaded() => DataContext = new DemoWindowExtendedControlsViewModel();
+        Loaded += (_, _) => DemoWindowExtendedControlsLoaded();
     }
+
+    private void DemoWindowExtendedControlsLoaded() => DataContext = new DemoWindowExtendedControlsViewModel();
 }

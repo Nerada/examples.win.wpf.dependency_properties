@@ -1,7 +1,7 @@
 ﻿// -----------------------------------------------
 //     Author: Ramon Bollen
 //      File: DependencyProperties.ViewModelBase.cs
-// Created on: 20210329
+// Created on: 20210811
 // -----------------------------------------------
 
 using System.Collections.Concurrent;
@@ -9,66 +9,61 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace DependencyProperties
+namespace DependencyProperties;
+
+/// <summary>
+///     Base class for view models.
+///     https://stackoverflow.com/questions/36149863/how-to-write-a-viewmodelbase-in-mvvm
+/// </summary>
+public class ViewModelBase : INotifyPropertyChanged
 {
+    private static readonly ConcurrentDictionary<string, PropertyChangedEventArgs>
+        CachedPropertyChangedEventArgs = new();
+
     /// <summary>
-    /// Base class for view models.
-    /// https://stackoverflow.com/questions/36149863/how-to-write-a-viewmodelbase-in-mvvm
+    ///     Indicates if <see cref="PropertyChanged" /> has any subscribers.
     /// </summary>
-    public class ViewModelBase : INotifyPropertyChanged
+    // ReSharper disable once UnusedMember.Global
+    protected bool AnyPropertyChangedSubscribers => PropertyChanged != null;
+
+    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged" />
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    /// <summary>
+    ///     Assigns a new value to a property's backing field. Then, raises the <see cref="PropertyChanged" /> event if needed.
+    /// </summary>
+    /// <typeparam name="T">The type of the backing field.</typeparam>
+    /// <param name="field">The backing field storing the property's value.</param>
+    /// <param name="newValue">The property's new value.</param>
+    /// <param name="propertyName">(optional) The name of the property that changed.</param>
+    /// <returns>True if the <see cref="PropertyChanged" /> event was raised, false otherwise.</returns>
+    protected bool Set<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
     {
-        private static readonly ConcurrentDictionary<string, PropertyChangedEventArgs>
-            CachedPropertyChangedEventArgs = new();
+        if (EqualityComparer<T>.Default.Equals(field, newValue)) return false;
 
-        /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged"/>
-        public event PropertyChangedEventHandler? PropertyChanged;
+        field = newValue;
+        RaisePropertyChanged(propertyName);
+        return true;
+    }
 
-        /// <summary>
-        /// Indicates if <see cref="PropertyChanged"/> has any subscribers.
-        /// </summary>
-        protected bool AnyPropertyChangedSubscribers => PropertyChanged != null;
+    /// <summary>Raises the PropertyChanged event if needed.</summary>
+    /// <param name="propertyName">The name of the property that changed.</param>
+    // ReSharper disable once MemberCanBePrivate.Global
+    protected void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        if (propertyName == null) return;
 
-        /// <summary>
-        /// Assigns a new value to a property's backing field. Then, raises the <see cref="PropertyChanged"/> event if needed.
-        /// </summary>
-        /// <typeparam name="T">The type of the backing field.</typeparam>
-        /// <param name="field">The backing field storing the property's value.</param>
-        /// <param name="newValue">The property's new value.</param>
-        /// <param name="propertyName">(optional) The name of the property that changed.</param>
-        /// <returns>True if the <see cref="PropertyChanged"/> event was raised, false otherwise.</returns>
-        protected bool Set<T>(ref T field, T newValue, [CallerMemberName] string? propertyName = null)
+        PropertyChanged?.Invoke(this, GetCachedPropertyChangedEventArgs(propertyName));
+    }
+
+    private PropertyChangedEventArgs GetCachedPropertyChangedEventArgs(string propertyName)
+    {
+        if (!CachedPropertyChangedEventArgs.TryGetValue(propertyName, out PropertyChangedEventArgs? args))
         {
-            if (EqualityComparer<T>.Default.Equals(field, newValue))
-            {
-                return false;
-            }
-
-            field = newValue;
-            RaisePropertyChanged(propertyName);
-            return true;
+            args = new PropertyChangedEventArgs(propertyName);
+            CachedPropertyChangedEventArgs.TryAdd(propertyName, args);
         }
 
-        /// <summary>Raises the PropertyChanged event if needed.</summary>
-        /// <param name="propertyName">The name of the property that changed.</param>
-        protected void RaisePropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            if (propertyName == null)
-            {
-                return;
-            }
-
-            PropertyChanged?.Invoke(this, GetCachedPropertyChangedEventArgs(propertyName));
-        }
-
-        private PropertyChangedEventArgs GetCachedPropertyChangedEventArgs(string propertyName)
-        {
-            if (!CachedPropertyChangedEventArgs.TryGetValue(propertyName, out PropertyChangedEventArgs? args))
-            {
-                args = new PropertyChangedEventArgs(propertyName);
-                CachedPropertyChangedEventArgs.TryAdd(propertyName, args);
-            }
-
-            return args;
-        }
+        return args;
     }
 }

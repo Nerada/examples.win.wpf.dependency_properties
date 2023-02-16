@@ -1,23 +1,22 @@
 ﻿// -----------------------------------------------
 //     Author: Ramon Bollen
 //      File: DependencyProperties.DemoWindowSegmentedScrollBar.xaml.cs
-// Created on: 20201209
+// Created on: 20220623
 // -----------------------------------------------
 
-namespace DependencyProperties
+namespace DependencyProperties;
+
+/// <summary>
+///     Interaction logic for DemoWindowSegmentedScrollBar.xaml
+/// </summary>
+public partial class DemoWindowSegmentedScrollBar
 {
-    /// <summary>
-    ///     Interaction logic for DemoWindowSegmentedScrollBar.xaml
-    /// </summary>
-    public partial class DemoWindowSegmentedScrollBar
+    public DemoWindowSegmentedScrollBar()
     {
-        public DemoWindowSegmentedScrollBar()
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            Loaded += (_, _) => DemoWindowSegmentedScrollBarLoaded();
-        }
-
-        private void DemoWindowSegmentedScrollBarLoaded() => DataContext = new DemoWindowSegmentedScrollBarViewModel();
+        Loaded += (_, _) => DemoWindowSegmentedScrollBarLoaded();
     }
+
+    private void DemoWindowSegmentedScrollBarLoaded() => DataContext = new DemoWindowSegmentedScrollBarViewModel();
 }

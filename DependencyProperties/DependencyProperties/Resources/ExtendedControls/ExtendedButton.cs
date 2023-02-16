@@ -1,168 +1,166 @@
 ﻿// -----------------------------------------------
 //     Author: Ramon Bollen
 //      File: DependencyProperties.ExtendedButton.cs
-// Created on: 20201201
+// Created on: 20220623
 // -----------------------------------------------
 
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace DependencyProperties.Resources.ExtendedControls
+namespace DependencyProperties.Resources.ExtendedControls;
+
+/// <summary>
+///     Based on: https://stackoverflow.com/questions/815797/add-dependency-property-to-control
+/// </summary>
+public sealed class ExtendedButton : Button
 {
     /// <summary>
-    ///     Based on: https://stackoverflow.com/questions/815797/add-dependency-property-to-control
+    ///     Foreground color extension
     /// </summary>
-    public sealed class ExtendedButton : Button
+    public new static readonly DependencyProperty ForegroundProperty =
+        DependencyProperty.Register(nameof(Foreground), typeof(Brush), typeof(ExtendedButton), new PropertyMetadata(default(Brush), ForegroundColorChangedCallback));
+
+    public static readonly DependencyProperty HasForegroundColorProperty =
+        DependencyProperty.Register(nameof(HasForegroundColor), typeof(bool), typeof(ExtendedButton), new PropertyMetadata(false));
+
+    /// <summary>
+    ///     Background color extension
+    /// </summary>
+    public new static readonly DependencyProperty BackgroundProperty =
+        DependencyProperty.Register(nameof(Background), typeof(Brush), typeof(ExtendedButton), new PropertyMetadata(default(Brush), BackgroundColorChangedCallback));
+
+    public static readonly DependencyProperty HasBackgroundColorProperty =
+        DependencyProperty.Register(nameof(HasBackgroundColor), typeof(bool), typeof(ExtendedButton), new PropertyMetadata(false));
+
+    /// <summary>
+    ///     Background hover color extension
+    /// </summary>
+    public static readonly DependencyProperty HasBackgroundHoverColorProperty =
+        DependencyProperty.Register(nameof(HasBackgroundHoverColor), typeof(bool), typeof(ExtendedButton), new PropertyMetadata(false));
+
+    public static readonly DependencyProperty BackgroundHoverColorProperty =
+        DependencyProperty.Register(nameof(BackgroundHoverColor), typeof(Brush), typeof(ExtendedButton), new PropertyMetadata(default(Brush), BackgroundHoverColorChangedCallback));
+
+
+    /// <summary>
+    ///     Foreground hover color extension
+    /// </summary>
+    public static readonly DependencyProperty HasForegroundHoverColorProperty =
+        DependencyProperty.Register(nameof(HasForegroundHoverColor), typeof(bool), typeof(ExtendedButton), new PropertyMetadata(false));
+
+    public static readonly DependencyProperty ForegroundHoverColorProperty =
+        DependencyProperty.Register(nameof(ForegroundHoverColor), typeof(Brush), typeof(ExtendedButton), new PropertyMetadata(default(Brush), ForegroundHoverColorChangedCallback));
+
+    /// <summary>
+    ///     Image extension
+    /// </summary>
+    public static readonly DependencyProperty HasImageProperty =
+        DependencyProperty.Register(nameof(HasImage), typeof(bool), typeof(ExtendedButton), new PropertyMetadata(false));
+
+    public static readonly DependencyProperty ImageProperty =
+        DependencyProperty.Register(nameof(Image), typeof(DrawingImage), typeof(ExtendedButton), new PropertyMetadata(default(DrawingImage), ImageChangedCallback));
+
+    public static readonly DependencyProperty ImageMarginProperty =
+        DependencyProperty.Register(nameof(ImageMargin), typeof(Thickness), typeof(ExtendedButton), new PropertyMetadata(default(Thickness), ImageChangedCallback));
+
+    /// <summary>
+    ///     Image hover extension
+    /// </summary>
+    public static readonly DependencyProperty HasImageHoverProperty =
+        DependencyProperty.Register(nameof(HasImageHover), typeof(bool), typeof(ExtendedButton), new PropertyMetadata(false));
+
+    public static readonly DependencyProperty ImageHoverProperty =
+        DependencyProperty.Register(nameof(ImageHover), typeof(DrawingImage), typeof(ExtendedButton), new PropertyMetadata(default(DrawingImage), ImageHoverChangedCallback));
+
+    /// <summary>
+    ///     Additional content extension
+    /// </summary>
+    public static readonly DependencyProperty Content2Property =
+        DependencyProperty.Register(nameof(Content2), typeof(string), typeof(ExtendedButton), new PropertyMetadata(default(string), Content2ChangedCallBack));
+
+
+    public bool HasForegroundColor => (bool)GetValue(HasForegroundColorProperty);
+
+    public bool HasBackgroundColor => (bool)GetValue(HasBackgroundColorProperty);
+
+    public bool HasBackgroundHoverColor => (bool)GetValue(HasBackgroundHoverColorProperty);
+
+    public bool HasForegroundHoverColor => (bool)GetValue(HasForegroundHoverColorProperty);
+
+    public bool HasImage => (bool)GetValue(HasImageProperty);
+
+    public bool HasImageHover => (bool)GetValue(HasImageHoverProperty);
+
+    public new Brush Foreground
     {
-        /// <summary>
-        ///     Foreground color extension
-        /// </summary>
-        public new static readonly DependencyProperty ForegroundProperty =
-            DependencyProperty.Register("Foreground", typeof(Brush), typeof(ExtendedButton), new PropertyMetadata(default(Brush), ForegroundColorChangedCallback));
+        get => (Brush)GetValue(ForegroundProperty);
+        set => SetValue(ForegroundProperty, value);
+    }
 
-        public static readonly DependencyProperty HasForegroundColorProperty =
-            DependencyProperty.Register("HasForegroundColor", typeof(bool), typeof(ExtendedButton), new PropertyMetadata(false));
+    public new Brush Background
+    {
+        get => (Brush)GetValue(BackgroundProperty);
+        set => SetValue(BackgroundProperty, value);
+    }
 
-        /// <summary>
-        ///     Background color extension
-        /// </summary>
-        public new static readonly DependencyProperty BackgroundProperty =
-            DependencyProperty.Register("Background", typeof(Brush), typeof(ExtendedButton), new PropertyMetadata(default(Brush), BackgroundColorChangedCallback));
+    public Brush BackgroundHoverColor
+    {
+        get => (Brush)GetValue(BackgroundHoverColorProperty);
+        set => SetValue(BackgroundHoverColorProperty, value);
+    }
 
-        public static readonly DependencyProperty HasBackgroundColorProperty =
-            DependencyProperty.Register("HasBackgroundColor", typeof(bool), typeof(ExtendedButton), new PropertyMetadata(false));
+    public Brush ForegroundHoverColor
+    {
+        get => (Brush)GetValue(ForegroundHoverColorProperty);
+        set => SetValue(ForegroundHoverColorProperty, value);
+    }
 
-        /// <summary>
-        ///     Background hover color extension
-        /// </summary>
-        public static readonly DependencyProperty HasBackgroundHoverColorProperty =
-            DependencyProperty.Register("HasBackgroundHoverColor", typeof(bool), typeof(ExtendedButton), new PropertyMetadata(false));
+    public DrawingImage Image
+    {
+        get => (DrawingImage)GetValue(ImageProperty);
+        set => SetValue(ImageProperty, value);
+    }
 
-        public static readonly DependencyProperty BackgroundHoverColorProperty =
-            DependencyProperty.Register("BackgroundHoverColor", typeof(Brush), typeof(ExtendedButton), new PropertyMetadata(default(Brush), BackgroundHoverColorChangedCallback));
+    public Thickness ImageMargin
+    {
+        get => (Thickness)GetValue(ImageMarginProperty);
+        set => SetValue(ImageMarginProperty, value);
+    }
 
-        /// <summary>
-        ///     Foreground hover color extension
-        /// </summary>
-        public static readonly DependencyProperty HasForegroundHoverColorProperty =
-            DependencyProperty.Register("HasForegroundHoverColor", typeof(bool), typeof(ExtendedButton), new PropertyMetadata(false));
+    public DrawingImage ImageHover
+    {
+        get => (DrawingImage)GetValue(ImageHoverProperty);
+        set => SetValue(ImageHoverProperty, value);
+    }
 
-        public static readonly DependencyProperty ForegroundHoverColorProperty =
-            DependencyProperty.Register("ForegroundHoverColor", typeof(Brush), typeof(ExtendedButton), new PropertyMetadata(default(Brush), ForegroundHoverColorChangedCallback));
+    public string Content2
+    {
+        set => SetValue(Content2Property, value);
+    }
 
-        /// <summary>
-        ///     Image extension
-        /// </summary>
-        public static readonly DependencyProperty HasImageProperty =
-            DependencyProperty.Register("HasImage", typeof(bool), typeof(ExtendedButton), new PropertyMetadata(false));
+    private static void ForegroundColorChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args) =>
+        (dependencyObject as ExtendedButton)?.SetValue(HasForegroundColorProperty, true);
 
-        public static readonly DependencyProperty ImageProperty =
-            DependencyProperty.Register("Image", typeof(DrawingImage), typeof(ExtendedButton), new PropertyMetadata(default(DrawingImage), ImageChangedCallback));
+    private static void BackgroundColorChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args) =>
+        (dependencyObject as ExtendedButton)?.SetValue(HasBackgroundColorProperty, true);
 
-        public static readonly DependencyProperty ImageMarginProperty =
-            DependencyProperty.Register("ImageMargin", typeof(Thickness), typeof(ExtendedButton), new PropertyMetadata(default(Thickness), ImageChangedCallback));
+    private static void BackgroundHoverColorChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args) =>
+        (dependencyObject as ExtendedButton)?.SetValue(HasBackgroundHoverColorProperty, true);
 
-        /// <summary>
-        ///     Image hover extension
-        /// </summary>
-        public static readonly DependencyProperty HasImageHoverProperty =
-            DependencyProperty.Register("HasImageHover", typeof(bool), typeof(ExtendedButton), new PropertyMetadata(false));
+    private static void ForegroundHoverColorChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args) =>
+        (dependencyObject as ExtendedButton)?.SetValue(HasForegroundHoverColorProperty, true);
 
-        public static readonly DependencyProperty ImageHoverProperty =
-            DependencyProperty.Register("ImageHover", typeof(DrawingImage), typeof(ExtendedButton), new PropertyMetadata(default(DrawingImage), ImageHoverChangedCallback));
+    private static void ImageChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args) =>
+        (dependencyObject as ExtendedButton)?.SetValue(HasImageProperty, true);
 
-        /// <summary>
-        ///     Additional content extension
-        /// </summary>
-        public static readonly DependencyProperty Content2Property =
-            DependencyProperty.Register("Content2", typeof(string), typeof(ExtendedButton), new PropertyMetadata(default(string), Content2ChangedCallBack));
+    private static void ImageHoverChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args) =>
+        (dependencyObject as ExtendedButton)?.SetValue(HasImageHoverProperty, true);
 
-        public bool HasForegroundColor => (bool)GetValue(HasForegroundColorProperty);
+    private static void Content2ChangedCallBack(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
+    {
+        if (dependencyObject as ExtendedButton is not { } extendedButton) return;
 
-        public new Brush Foreground
-        {
-            get => (Brush)GetValue(ForegroundProperty);
-            set => SetValue(ForegroundProperty, value);
-        }
-
-        public bool HasBackgroundColor => (bool)GetValue(HasBackgroundColorProperty);
-
-        public new Brush Background
-        {
-            get => (Brush)GetValue(BackgroundProperty);
-            set => SetValue(BackgroundProperty, value);
-        }
-
-        public bool HasBackgroundHoverColor => (bool)GetValue(HasBackgroundHoverColorProperty);
-
-        public Brush BackgroundHoverColor
-        {
-            get => (Brush)GetValue(BackgroundHoverColorProperty);
-            set => SetValue(BackgroundHoverColorProperty, value);
-        }
-
-        public bool HasForegroundHoverColor => (bool)GetValue(HasForegroundHoverColorProperty);
-
-        public Brush ForegroundHoverColor
-        {
-            get => (Brush)GetValue(ForegroundHoverColorProperty);
-            set => SetValue(ForegroundHoverColorProperty, value);
-        }
-
-        public bool HasImage => (bool)GetValue(HasImageProperty);
-
-        public DrawingImage Image
-        {
-            get => (DrawingImage)GetValue(ImageProperty);
-            set => SetValue(ImageProperty, value);
-        }
-
-        public Thickness ImageMargin
-        {
-            get => (Thickness)GetValue(ImageMarginProperty);
-            set => SetValue(ImageMarginProperty, value);
-        }
-
-        public bool HasImageHover => (bool)GetValue(HasImageHoverProperty);
-
-        public DrawingImage ImageHover
-        {
-            get => (DrawingImage)GetValue(ImageHoverProperty);
-            set => SetValue(ImageHoverProperty, value);
-        }
-
-        public string Content2
-        {
-            set => SetValue(Content2Property, value);
-        }
-
-        private static void ForegroundColorChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args) =>
-            (dependencyObject as ExtendedButton)?.SetValue(HasForegroundColorProperty, true);
-
-        private static void BackgroundColorChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args) =>
-            (dependencyObject as ExtendedButton)?.SetValue(HasBackgroundColorProperty, true);
-
-        private static void BackgroundHoverColorChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args) =>
-            (dependencyObject as ExtendedButton)?.SetValue(HasBackgroundHoverColorProperty, true);
-
-        private static void ForegroundHoverColorChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args) =>
-            (dependencyObject as ExtendedButton)?.SetValue(HasForegroundHoverColorProperty, true);
-
-        private static void ImageChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args) =>
-            (dependencyObject as ExtendedButton)?.SetValue(HasImageProperty, true);
-
-        private static void ImageHoverChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args) =>
-            (dependencyObject as ExtendedButton)?.SetValue(HasImageHoverProperty, true);
-
-        private static void Content2ChangedCallBack(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
-        {
-            if (!(dependencyObject as ExtendedButton is { } extendedButton))
-            {
-                return;
-            }
-
-            extendedButton.Content += (string)args.NewValue;
-        }
+        extendedButton.Content += (string)args.NewValue;
     }
 }
