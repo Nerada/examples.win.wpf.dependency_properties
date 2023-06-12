@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -19,7 +19,7 @@
   
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-    <PackageReference Include="MathConverter" Version="2.1.0-alpha0001" />
+    <PackageReference Include="MathConverter" Version="2.1.0" />
     <PackageReference Include="Prism.Core" Version="8.1.97" />
   </ItemGroup>
   
